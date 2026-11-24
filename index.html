@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Stuti & Prateek - Engagement Invitation</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        :root {
+            --text-dark: #2c1a14;
+            --text-light: #5d4037;
+            --gold: #b38b39;
+            --gold-light: #dfc285;
+            /* Premium frosted glass optimized for the new image */
+            --bg-glass: rgba(255, 255, 255, 0.35); 
+            --border-glass: rgba(255, 255, 255, 0.5);
+            --bg-solid: #fcf9f2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background-color: var(--bg-solid);
+            height: 100vh;
+            overflow-y: hidden; 
+        }
+
+        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
+        .script { font-family: 'Alex Brush', cursive; }
+
+        /* --- New Background Image --- */
+        .background-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url('https://i.ibb.co/JWXCkZcf/46ce39d2c4f6bd251c3d5493933370db.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            /* Subtle zoom animation on load */
+            animation: bgZoom 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes bgZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* --- Magical Golden Dust Particles --- */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, #fff, var(--gold-light) 40%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float-up linear infinite;
+        }
+        @keyframes float-up {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.8; transform: translateY(80vh) scale(1.2); }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+        }
+
+        /* --- NEW UI/UX: Cinematic Split Door Intro Animation --- */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 9999; display: flex; justify-content: center; align-items: center;
+        }
+
+        .intro-door {
+            position: absolute; top: 0; height: 100%; width: 50.5%;
+            background-color: var(--bg-solid); z-index: 1;
+            transition: transform 1.4s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .left-door { left: 0; border-right: 1px solid var(--gold-light); }
+        .right-door { right: 0; }
+
+        .intro-content {
+            position: relative; z-index: 2; text-align: center;
+            display: flex; flex-direction: column; align-items: center;
+            transition: opacity 0.6s ease, transform 0.8s ease;
+        }
+
+        .pre-title {
+            font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--text-light); margin-bottom: 10px;
+            opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
+        }
+
+        .intro-text {
+            font-size: 4.5rem; color: var(--gold); margin-bottom: 40px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+            opacity: 0; transform: scale(0.9);
+            animation: introReveal 1.2s ease 0.6s forwards;
+        }
+
+        #tap-to-open {
+            background: transparent; color: var(--text-dark); border: 1px solid var(--gold);
+            padding: 16px 45px; border-radius: 40px; font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase;
+            cursor: pointer; position: relative; overflow: hidden;
+            opacity: 0; animation: fadeUp 1s ease 1s forwards;
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        #tap-to-open::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: rgba(179, 139, 57, 0.15); border-radius: 50%;
+            transform: scale(0); animation: pulse-ring 2.5s infinite;
+        }
+
+        @keyframes introReveal { to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.3); opacity: 1; }
+            80%, 100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* Door Open State Triggered via JS */
+        .doors-open .left-door { transform: translateX(-100%); }
+        .doors-open .right-door { transform: translateX(100%); }
+        .doors-open .intro-content { opacity: 0; transform: scale(1.1); pointer-events: none; }
+        .intro-hidden { display: none !important; }
+
+        /* --- Main Content Layout --- */
+        #main-content {
+            opacity: 0;
+            transform: scale(0.95) translateY(30px);
+            transition: opacity 1.5s cubic-bezier(0.25, 1, 0.3, 1), transform 1.5s cubic-bezier(0.25, 1, 0.3, 1);
+        }
+        
+        #main-content.revealed {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .content-container {
+            max-width: 500px; margin: 0 auto;
+            padding: 120px 20px 350px; 
+            display: flex; flex-direction: column; gap: 40px;
+        }
+
+        /* --- Ultra Premium Glass Card --- */
+        .glass-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px; padding: 45px 25px; text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06), inset 0 0 20px rgba(255,255,255,0.4);
+            position: relative; overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 130%; height: 130%;
+            background: radial-gradient(circle, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0) 65%);
+            z-index: -1; pointer-events: none;
+        }
+
+        .section-title { font-size: 1.4rem; color: var(--text-dark); margin-bottom: 30px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; }
+        .section-title span { display: block; font-size: 3rem; color: var(--gold); margin-bottom: -10px; text-transform: none; letter-spacing: 0; }
+        .divider { width: 50px; height: 1.5px; background: var(--gold-light); margin: 20px auto; }
+
+        /* Typography */
+        .names-hero { font-size: 3.8rem; line-height: 1; color: var(--text-dark); margin-bottom: 10px;}
+        .names-hero span { font-size: 1.8rem; color: var(--gold); font-family: 'Playfair Display', serif; display: block; margin: 10px 0;}
+        .date-hero { font-size: 1.15rem; font-weight: 500; color: var(--text-dark); line-height: 1.6; letter-spacing: 1px;}
+
+        /* --- Sections Design --- */
+        .couple-intro h3 { font-size: 1.5rem; color: var(--text-dark); margin-bottom: 5px; }
+        .couple-intro p { font-size: 0.85rem; color: var(--text-light); line-height: 1.6; margin-bottom: 20px; font-style: italic;}
+        .couple-avatar {
+            width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 10px; background: rgba(255,255,255,0.8);
+            border: 2px solid var(--gold-light); display: flex; justify-content: center; align-items: center;
+            font-size: 2rem; color: var(--gold); font-family: 'Alex Brush', cursive;
+        }
+
+        .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 25px; }
+        .countdown-item {
+            background: rgba(255,255,255,0.5); border: 1px solid var(--border-glass); border-radius: 12px; padding: 15px 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .countdown-item span { display: block; font-size: 1.8rem; color: var(--text-dark); font-family: 'Playfair Display', serif; }
+        .countdown-item label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 600; margin-top: 5px; display: block;}
+
+        .btn {
+            background: rgba(255,255,255,0.9); color: var(--text-dark); border: 1px solid var(--gold);
+            padding: 14px 30px; border-radius: 30px; font-size: 0.75rem; letter-spacing: 2px;
+            text-transform: uppercase; text-decoration: none; display: inline-block;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-top: 10px; box-shadow: 0 8px 20px rgba(179, 139, 57, 0.15);
+        }
+        .btn:hover, .btn:active { background: var(--gold); color: #fff; transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 25px rgba(179, 139, 57, 0.3); }
+
+        /* --- Swiper --- */
+        .swiper { width: 100%; padding: 10px 0 45px; }
+        .swiper-slide {
+            width: 82%; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); border: 4px solid #fff; overflow: hidden; aspect-ratio: 4/5;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .swiper-slide:not(.swiper-slide-active) { transform: scale(0.9) translateY(10px); opacity: 0.6; }
+        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .swiper-pagination-bullet { background: var(--text-light); opacity: 0.3; width: 6px; height: 6px; transition: 0.3s;}
+        .swiper-pagination-bullet-active { background: var(--gold); opacity: 1; transform: scale(1.5); }
+
+        /* --- Timeline --- */
+        .timeline { position: relative; text-align: left; padding-left: 25px; margin-top: 20px; }
+        .timeline::before {
+            content: ''; position: absolute; left: 6px; top: 10px; bottom: 10px; width: 1.5px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+        }
+        .timeline-item { position: relative; margin-bottom: 35px; }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -24px; top: 4px; width: 10px; height: 10px;
+            border-radius: 50%; background: #fff; border: 2px solid var(--gold); box-shadow: 0 0 10px rgba(179, 139, 57, 0.4);
+        }
+        .t-date { font-size: 0.7rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; font-weight: 600;}
+        .t-title { font-size: 1.4rem; color: var(--text-dark); margin-bottom: 6px; font-family: 'Playfair Display', serif;}
+        .t-desc { font-size: 0.9rem; color: var(--text-light); line-height: 1.5; font-weight: 300;}
+
+        /* --- RSVP Form --- */
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-control {
+            width: 100%; padding: 15px 20px; border-radius: 12px; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.7);
+            font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: var(--text-dark); outline: none; transition: 0.3s;
+        }
+        .form-control:focus { border-color: var(--gold); background: rgba(255,255,255,0.95); }
+
+        /* --- Staggered Scroll Animations --- */
+        .animate-on-scroll { opacity: 0; transform: translateY(50px) scale(0.97); transition: opacity 1s cubic-bezier(0.25, 1, 0.3, 1), transform 1s cubic-bezier(0.25, 1, 0.3, 1); }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0) scale(1); }
+        .animate-on-scroll.visible > *:nth-child(1) { animation: fadeInUp 0.8s ease forwards 0.1s; opacity: 0; }
+        .animate-on-scroll.visible > *:nth-child(2) { animation: fadeInUp 0.8s ease forwards 0.2s; opacity: 0; }
+        .animate-on-scroll.visible > *:nth-child(3) { animation: fadeInUp 0.8s ease forwards 0.3s; opacity: 0; }
+        .animate-on-scroll.visible > *:nth-child(4) { animation: fadeInUp 0.8s ease forwards 0.4s; opacity: 0; }
+        .animate-on-scroll.visible > *:nth-child(5) { animation: fadeInUp 0.8s ease forwards 0.5s; opacity: 0; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <!-- New Background Image -->
+    <div class="background-wrapper"></div>
+    
+    <!-- Magical Floating Particles -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- NEW UI/UX: Cinematic Split Door Reveal -->
+    <div id="intro-overlay">
+        <div class="intro-door left-door"></div>
+        <div class="intro-door right-door"></div>
+        <div class="intro-content">
+            <p class="pre-title">You are invited to the engagement ceremony of</p>
+            <h1 class="intro-text script">Stuti & Prateek</h1>
+            <button id="tap-to-open">Open Invitation</button>
+        </div>
+    </div>
+
+    <!-- Main Website Content -->
+    <div id="main-content">
+        <div class="content-container">
+            
+            <!-- Hero / Invitation Card -->
+            <div class="glass-card animate-on-scroll visible">
+                <p class="t-date" style="font-size: 0.6rem; margin-bottom: 20px;">You're invited to the engagement ceremony of</p>
+                <h1 class="names-hero script">Stuti Singh <br><span>&</span> Prateek Singh</h1>
+                <div class="divider"></div>
+                <p class="date-hero serif">Saturday, 12 December 2026<br><span style="font-family:'Montserrat', sans-serif; font-size: 0.8rem; font-weight:400; color: var(--text-light);">7:00 PM ONWARDS</span></p>
+            </div>
+
+            <!-- Meet the Couple -->
+            <div class="glass-card animate-on-scroll">
+                <h2 class="section-title"><span class="script">Two Hearts</span> One Promise</h2>
+                <div class="couple-intro" style="margin-bottom: 25px;">
+                    <div class="couple-avatar">S</div>
+                    <h3>Stuti Singh</h3>
+                    <p>Daughter of Neetu Singh & Swadesh Singh</p>
+                </div>
+                <div class="couple-intro">
+                    <div class="couple-avatar">P</div>
+                    <h3>Prateek Singh</h3>
+                    <p>Son of Neelam Singh & Uday Pratap Singh</p>
+                </div>
+            </div>
+            
+            <!-- Countdown Section -->
+            <div class="glass-card animate-on-scroll">
+                <h2 class="section-title"><span class="script">Counting Down</span> To The Ring Ceremony</h2>
+                <div class="countdown-grid">
+                    <div class="countdown-item"><span id="days">00</span><label>Days</label></div>
+                    <div class="countdown-item"><span id="hours">00</span><label>Hours</label></div>
+                    <div class="countdown-item"><span id="mins">00</span><label>Mins</label></div>
+                    <div class="countdown-item"><span id="secs">00</span><label>Secs</label></div>
+                </div>
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Engagement+Ceremony+of+Stuti+Singh+%26+Prateek+Singh&dates=20261212T133000Z/20261212T173000Z&details=Join+us+to+celebrate+the+Engagement+Ceremony+of+Stuti+Singh+%26+Prateek+Singh.+RSVP:+Swadesh+Singh+(7007552862)&location=Sapna+Clarks+Inn,+Tedhi+Pulia+Ring+Rd,+Lucknow" target="_blank" class="btn">Add to Calendar</a>
+            </div>
+
+            <!-- Moments of Promise (Faceless Engagement Gallery) -->
+            <div class="glass-card animate-on-scroll" style="padding-left: 0; padding-right: 0;">
+                <h2 class="section-title"><span class="script">A Promise</span> of Forever</h2>
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="https://images.pexels.com/photos/1456613/pexels-photo-1456613.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Exchanging Rings"></div>
+                        <div class="swiper-slide"><img src="https://images.pexels.com/photos/31965606/pexels-photo-31965606.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Hands Held Together"></div>
+                        <div class="swiper-slide"><img src="https://images.pexels.com/photos/7610426/pexels-photo-7610426.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Engagement Ring on Rose"></div>
+                        <div class="swiper-slide"><img src="https://images.pexels.com/photos/33986526/pexels-photo-33986526.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Promise Ring Close-up"></div>
+                        <div class="swiper-slide"><img src="https://images.pexels.com/photos/34304029/pexels-photo-34304029.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Ring and Fresh Blossoms"></div>
+                        <div class="swiper-slide"><img src="https://images.pexels.com/photos/34004527/pexels-photo-34004527.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Forever Together"></div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+
+            <!-- Engagement Evening Timeline -->
+            <div class="glass-card animate-on-scroll">
+                <h2 class="section-title"><span class="script">Evening</span> Itinerary</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="t-date">Sat, 12 Dec • 7:00 PM</div>
+                        <h3 class="t-title">Warm Welcome</h3>
+                        <p class="t-desc">Arrival of guests, joyful greetings, and evening refreshments.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="t-date">Sat, 12 Dec • 8:00 PM</div>
+                        <h3 class="t-title">Ring Ceremony</h3>
+                        <p class="t-desc">The auspicious exchange of rings, sealing a lifelong promise amidst family blessings.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="t-date">Sat, 12 Dec • 9:00 PM</div>
+                        <h3 class="t-title">Celebration & Dinner</h3>
+                        <p class="t-desc">Music, laughter, and a grand celebratory feast to toast the newly engaged couple.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Venue Details -->
+            <div class="glass-card animate-on-scroll">
+                <h2 class="section-title"><span class="script">The</span> Venue</h2>
+                <h3 class="t-title" style="font-size: 1.6rem;">Sapna Clarks Inn</h3>
+                <p class="t-desc" style="margin-bottom: 20px;">Tedhi Pulia Ring Rd, Lucknow</p>
+                <div class="divider" style="width: 30px;"></div>
+                <h4 style="font-size: 0.75rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px;">Dress Code</h4>
+                <p class="t-desc" style="margin-bottom: 25px;">Festive Indian ethnic or elegant evening wear.</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=Sapna+Clarks+Inn+Tedhi+Pulia+Ring+Rd+Lucknow" target="_blank" class="btn">Navigate to Venue</a>
+            </div>
+            
+            <!-- Blessings Note -->
+            <div class="glass-card animate-on-scroll">
+                <h2 class="section-title"><span class="script">Love &</span> Blessings</h2>
+                <p class="t-desc" style="font-style: italic; font-size: 1rem; color: var(--text-dark);">
+                    "Your presence and heartfelt blessings as Stuti and Prateek begin their journey to forever mean the world to our families. Come celebrate this special evening with us."
+                </p>
+            </div>
+
+            <!-- Interactive RSVP Form & Contact -->
+            <div class="glass-card animate-on-scroll">
+                <h2 class="section-title"><span class="script">Join The</span> Celebration</h2>
+                <p class="t-desc" style="margin-bottom: 20px;">
+                    <strong style="color: var(--text-dark); font-weight: 500;">RSVP: Swadesh Singh</strong><br>
+                    <a href="tel:+917007552862" style="color: var(--gold); text-decoration: none; font-weight: 600; letter-spacing: 1px;">&#128222; 7007552862</a>
+                </p>
+                <form onsubmit="event.preventDefault(); alert('Thank you! We look forward to celebrating Stuti & Prateek\'s engagement with you.');">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" required>
+                            <option value="" disabled selected>Will you be joining us?</option>
+                            <option value="yes">Yes, I'll be there to bless the couple!</option>
+                            <option value="no">Sending warm wishes from afar.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Number of guests" min="1" max="10" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%; background: var(--gold); color: #fff; margin-top: 5px; border:none;">Confirm Attendance</button>
+                </form>
+            </div>
+            
+            <!-- Spacer for background reveal at bottom -->
+            <div style="height: 50px;"></div>
+        </div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        // Generate Particles Dynamically
+        const particlesContainer = document.getElementById('particles');
+        for(let i = 0; i < 25; i++) {
+            let particle = document.createElement('div');
+            particle.classList.add('particle');
+            let size = Math.random() * 8 + 2; 
+            particle.style.width = `${size}px`; particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            particle.style.animationDelay = `${Math.random() * 10}s`;
+            particlesContainer.appendChild(particle);
+        }
+
+        // Cinematic Split-Door Intro Logic
+        const tapBtn = document.getElementById('tap-to-open');
+        const overlay = document.getElementById('intro-overlay');
+        const mainContent = document.getElementById('main-content');
+
+        tapBtn.addEventListener('click', () => {
+            // Trigger door split animation
+            overlay.classList.add('doors-open');
+            
+            // Re-enable scrolling
+            document.body.style.overflowY = 'auto';
+            document.body.style.height = 'auto';
+            
+            // Trigger main content cinematic zoom-in
+            setTimeout(() => {
+                mainContent.classList.add('revealed');
+            }, 300); // Slight delay so doors start opening first
+            
+            // Remove intro from DOM after animation completes to save memory
+            setTimeout(() => { 
+                overlay.classList.add('intro-hidden'); 
+            }, 1500);
+        });
+
+        // Countdown Timer (12 December 2026, 7:00 PM)
+        const engagementDate = new Date("Dec 12, 2026 19:00:00").getTime();
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = engagementDate - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.querySelector(".countdown-grid").innerHTML = "<h3 style='grid-column: span 4; font-family: Playfair Display; color: var(--gold); font-size: 2rem;'>Officially Engaged!</h3>";
+                return;
+            }
+
+            document.getElementById("days").innerText = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+            document.getElementById("hours").innerText = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+            document.getElementById("mins").innerText = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            document.getElementById("secs").innerText = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+        }, 1000);
+
+        // Album Swiper Initialization
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1.35, centeredSlides: true, spaceBetween: 20, grabCursor: true,
+            pagination: { el: ".swiper-pagination", clickable: true },
+            autoplay: { delay: 2500, disableOnInteraction: true },
+        });
+
+        // Advanced Intersection Observer for Scroll Animations
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.12 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
